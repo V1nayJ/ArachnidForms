@@ -30,3 +30,5 @@ export default function PrivacyPolicy() {
     </div>
   )
 }
+
+// [dev-log-sync]: d028cbcaf5bb5271
