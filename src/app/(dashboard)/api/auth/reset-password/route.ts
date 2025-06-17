@@ -54,3 +54,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Failed to send reset link" }, { status: 500 })
   }
 }
+
+// [dev-log-sync]: 355357a636ed2273
