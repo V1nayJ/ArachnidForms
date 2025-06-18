@@ -26,3 +26,5 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Internal Error" }, { status: 500 });
   }
 }
+
+// [dev-log-sync]: 6b9e1b11441f9096
