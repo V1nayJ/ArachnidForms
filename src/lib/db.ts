@@ -14,3 +14,5 @@ export const db = globalThis.prisma || new PrismaClient({ adapter });
 if (process.env.NODE_ENV !== "production") {
   globalThis.prisma = db;
 }
+
+// [dev-log-sync]: 2d7ad3b9fe6b6bd2
