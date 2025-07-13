@@ -33,3 +33,5 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Failed to cleanup" }, { status: 500 })
   }
 }
+
+// [dev-log-sync]: 1f5b15fb45f76eec
