@@ -14,4 +14,4 @@ export default async function LoginPage() {
   )
 }
 
-// [dev-log-sync]: f1be82ffaa75e2be
+// [dev-log-sync]: 32dacedd3a056179
