@@ -14,4 +14,4 @@ export default async function ResetPasswordPage() {
   )
 }
 
-// [dev-log-sync]: 12a5533d68f8a9ab
+// [dev-log-sync]: c70224b89380de00
