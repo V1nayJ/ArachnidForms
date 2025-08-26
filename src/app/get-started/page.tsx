@@ -32,4 +32,4 @@ export default async function GetStartedPage() {
   return <GetStartedWizard envStatus={envStatus} />;
 }
 
-// [dev-log-sync]: 94a51a7a6bd7dc69
+// [dev-log-sync]: 47d6a209179c2220
