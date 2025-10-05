@@ -31,4 +31,4 @@ export default function PrivacyPolicy() {
   )
 }
 
-// [dev-log-sync]: a55b074d91c49bad
+// [dev-log-sync]: 6bb3dc7e61ed718e
