@@ -31,4 +31,4 @@ export default function TermsOfService() {
   )
 }
 
-// [dev-log-sync]: e04bf31a2429be12
+// [dev-log-sync]: e12df3c8a8dbaa85
