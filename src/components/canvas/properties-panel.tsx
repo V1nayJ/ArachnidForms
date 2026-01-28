@@ -177,4 +177,4 @@ export function PropertiesPanel({
   );
 }
 
-// [dev-log-sync]: 41c83097cbb89ccd
+// [dev-log-sync]: ee23f69d055be89d
