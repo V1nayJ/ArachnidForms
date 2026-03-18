@@ -14,4 +14,4 @@ export default async function RegisterPage() {
   )
 }
 
-// [dev-log-sync]: c4b9ae4d6a383dcd
+// [dev-log-sync]: a008cfd9ad1c04eb
