@@ -19,4 +19,4 @@ export const EndNode = memo(({ data, selected }: NodeProps) => {
 
 EndNode.displayName = 'EndNode';
 
-// [dev-log-sync]: 656d0d652c0a5e69
+// [dev-log-sync]: bc0e160e0c95ddaa
