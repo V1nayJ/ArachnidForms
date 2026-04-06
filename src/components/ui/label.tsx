@@ -19,4 +19,4 @@ function Label({ className, ...props }: React.ComponentProps<"label">) {
 
 export { Label }
 
-// [dev-log-sync]: 8b64c71d4b81c0c5
+// [dev-log-sync]: a5a8f1c271392d7b
