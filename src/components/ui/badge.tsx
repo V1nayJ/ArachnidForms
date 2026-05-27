@@ -51,4 +51,4 @@ function Badge({
 
 export { Badge, badgeVariants }
 
-// [dev-log-sync]: 4818bc281b99ff3a
+// [dev-log-sync]: 6d0799e24ae711fe
