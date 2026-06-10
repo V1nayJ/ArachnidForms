@@ -79,4 +79,4 @@ export function UserMenu({ user }: { user: any }) {
   )
 }
 
-// [dev-log-sync]: 7a70325727ad293c
+// [dev-log-sync]: c37a22a6f24f3a80
