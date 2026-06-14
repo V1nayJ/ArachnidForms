@@ -19,7 +19,23 @@ export async function POST(
     const body = await req.json();
     const { answers, answersById, responseId, captchaToken } = body;
 
-    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+    const form = await db.form.findUnique({
+      where: { slug: params.slug },
+      include: {
+        _count: {
+          select: { responses: true }
+        },
+        owner: true
+      }
+    });
+
+    if (!form) {
+      return NextResponse.json({ error: "Form not found" }, { status: 404 });
+    }
+
+    const ownerIntegrations = (form.owner?.integrations as any) || {};
+    const secretKey = ownerIntegrations.recaptcha_secret || process.env.RECAPTCHA_SECRET_KEY;
+    
     if (secretKey) {
       if (!captchaToken) {
         return NextResponse.json({ error: "Please complete the reCAPTCHA to submit." }, { status: 400 });
@@ -37,19 +53,6 @@ export async function POST(
       if (!verifyData.success) {
         return NextResponse.json({ error: "reCAPTCHA verification failed. Please try again." }, { status: 400 });
       }
-    }
-
-    const form = await db.form.findUnique({
-      where: { slug: params.slug },
-      include: {
-        _count: {
-          select: { responses: true }
-        }
-      }
-    });
-
-    if (!form) {
-      return NextResponse.json({ error: "Form not found" }, { status: 404 });
     }
 
     if (form.status !== "published") {

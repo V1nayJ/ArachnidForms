@@ -24,7 +24,7 @@ interface FormNode {
   };
 }
 
-export function PublicFormClient({ slug, title, canvasData, session, previousResponse }: { slug: string, title: string, canvasData: any, session: any, previousResponse?: any }) {
+export function PublicFormClient({ slug, title, canvasData, session, previousResponse, recaptchaSite }: { slug: string, title: string, canvasData: any, session: any, previousResponse?: any, recaptchaSite?: string }) {
   const pathname = usePathname();
   const [hasVisited, setHasVisited] = useState(false);
   const [answersById, setAnswersById] = useState<Record<string, any>>({});
@@ -270,10 +270,10 @@ export function PublicFormClient({ slug, title, canvasData, session, previousRes
                 </div>
               )}
 
-              {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && !session?.user?.isTestAccount && (
+              {recaptchaSite && !session?.user?.isTestAccount && (
                 <div className="flex justify-center mt-6">
                   <ReCAPTCHA
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                    sitekey={recaptchaSite}
                     onChange={(token) => setCaptchaToken(token)}
                   />
                 </div>
@@ -281,7 +281,7 @@ export function PublicFormClient({ slug, title, canvasData, session, previousRes
 
               <Button 
                 onClick={session?.user?.isTestAccount ? () => signIn(undefined, { callbackUrl: pathname }) : handleSubmit} 
-                disabled={isSubmitting || (!!process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && !session?.user?.isTestAccount && !captchaToken)}
+                disabled={isSubmitting || (!!recaptchaSite && !session?.user?.isTestAccount && !captchaToken)}
                 className={cn(
                   "h-14 sm:h-16 px-8 sm:px-12 text-lg sm:text-xl font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all w-full sm:w-auto mt-6",
                   isSubmitting && "opacity-70 cursor-not-allowed"

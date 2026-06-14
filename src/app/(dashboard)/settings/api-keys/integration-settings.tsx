@@ -27,7 +27,9 @@ export function IntegrationSettings({ initialIntegrations, isTestAccount, envSta
     s3_access: initialIntegrations?.s3_access || "",
     s3_secret: initialIntegrations?.s3_secret || "",
     s3_region: initialIntegrations?.s3_region || "",
-    s3_bucket: initialIntegrations?.s3_bucket || ""
+    s3_bucket: initialIntegrations?.s3_bucket || "",
+    recaptcha_site: initialIntegrations?.recaptcha_site || "",
+    recaptcha_secret: initialIntegrations?.recaptcha_secret || ""
   });
 
   const [isSaving, setIsSaving] = useState(false);
@@ -161,6 +163,23 @@ export function IntegrationSettings({ initialIntegrations, isTestAccount, envSta
               <div className="space-y-1">
                 <Label className="text-[10px] font-semibold">Stripe Secret Key</Label>
                 <Input name="stripe" type="password" placeholder="sk_live_..." value={integrations.stripe} onChange={handleChange} className="h-7 text-xs font-mono bg-background" />
+              </div>
+            </div>
+          </div>
+
+          <div className="p-3 border border-border bg-surface/30 rounded-lg space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center justify-between">
+              Spam Protection
+              <span className="text-[10px] font-normal normal-case opacity-70">reCAPTCHA v2</span>
+            </h4>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label className="text-[10px] font-semibold">Site Key</Label>
+                <Input name="recaptcha_site" placeholder="6LeIx..." value={integrations.recaptcha_site} onChange={handleChange} className="h-7 text-xs font-mono bg-background" />
+              </div>
+              <div className="space-y-1">
+                <Label className="text-[10px] font-semibold">Secret Key</Label>
+                <Input name="recaptcha_secret" type="password" placeholder="6LeIx..." value={integrations.recaptcha_secret} onChange={handleChange} className="h-7 text-xs font-mono bg-background" />
               </div>
             </div>
           </div>

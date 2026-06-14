@@ -49,6 +49,7 @@ export default async function PublicFormRenderer(props: { params: Promise<{ slug
   const session = await auth();
   const form = await db.form.findUnique({
     where: { slug: params.slug },
+    include: { owner: true }
   });
 
   if (!form) {
@@ -83,6 +84,9 @@ export default async function PublicFormRenderer(props: { params: Promise<{ slug
     }
   }
 
+  const ownerIntegrations = (form.owner?.integrations as any) || {};
+  const recaptchaSite = ownerIntegrations.recaptcha_site || process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+
   return (
     <PublicFormClient 
       slug={params.slug} 
@@ -90,6 +94,7 @@ export default async function PublicFormRenderer(props: { params: Promise<{ slug
       canvasData={canvasData} 
       session={session}
       previousResponse={previousResponse}
+      recaptchaSite={recaptchaSite}
     />
   );
 }

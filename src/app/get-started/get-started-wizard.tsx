@@ -29,7 +29,9 @@ export default function GetStartedWizard({ envStatus }: { envStatus?: { hasSmtp:
     s3_access: "",
     s3_secret: "",
     s3_region: "",
-    s3_bucket: ""
+    s3_bucket: "",
+    recaptcha_site: "",
+    recaptcha_secret: ""
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -218,6 +220,23 @@ export default function GetStartedWizard({ envStatus }: { envStatus?: { hasSmtp:
                       <div className="space-y-1">
                         <Label className="text-xs font-semibold">OpenAI API Key</Label>
                         <Input name="openai" type="password" placeholder="sk-..." value={integrations.openai} onChange={handleChange} className="h-8 text-xs font-mono bg-background" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-3 border border-border bg-surface/30 rounded-lg space-y-3">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center justify-between">
+                      Spam Protection
+                      <span className="text-[10px] font-normal normal-case opacity-70">reCAPTCHA v2</span>
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="space-y-1">
+                        <Label className="text-[10px] font-semibold">Site Key</Label>
+                        <Input name="recaptcha_site" placeholder="6LeIx..." value={integrations.recaptcha_site} onChange={handleChange} className="h-8 text-xs font-mono bg-background" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-[10px] font-semibold">Secret Key</Label>
+                        <Input name="recaptcha_secret" type="password" placeholder="6LeIx..." value={integrations.recaptcha_secret} onChange={handleChange} className="h-8 text-xs font-mono bg-background" />
                       </div>
                     </div>
                   </div>
