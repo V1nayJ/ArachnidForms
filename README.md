@@ -52,7 +52,7 @@ Automatically generated Pie Charts and Bar Charts for multiple-choice and rating
 Export all your form responses with a single click securely to your local device via CSV.
 
 ▸ **Spam Protection & Security**  
-Integrated Google reCAPTCHA v2 to prevent bot submissions. Users can provide their own API keys via the dashboard settings.
+Integrated Google reCAPTCHA v3 to seamlessly prevent bot submissions without interrupting users. Users can provide their own API keys via the dashboard settings.
 
 ---
 
@@ -113,7 +113,7 @@ Open `.env` in your preferred text editor and configure the core variables:
 openssl rand -base64 32
 ```
 ◆ **OAuth Providers (Optional)**: If you intend to use Google or Discord logins, provide their respective `CLIENT_ID` and `CLIENT_SECRET` values. Without these, you can still securely log in using the "Test Mode" option.
-◆ **Spam Protection (Optional)**: To enable reCAPTCHA v2 on forms, provide `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` and `RECAPTCHA_SECRET_KEY`. (Note: Users can also configure their own keys individually from the dashboard).
+◆ **Spam Protection (Optional)**: To enable reCAPTCHA v3 on forms, provide `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` and `RECAPTCHA_SECRET_KEY`. (Note: Users can also configure their own keys individually from the dashboard).
 
 ### 4. Database Initialization
 

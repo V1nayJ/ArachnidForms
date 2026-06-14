@@ -53,6 +53,11 @@ export async function POST(
       if (!verifyData.success) {
         return NextResponse.json({ error: "reCAPTCHA verification failed. Please try again." }, { status: 400 });
       }
+      
+      // v3 specific: check score
+      if (verifyData.score !== undefined && verifyData.score < 0.5) {
+        return NextResponse.json({ error: "Automated behavior detected. Please try again later." }, { status: 403 });
+      }
     }
 
     if (form.status !== "published") {

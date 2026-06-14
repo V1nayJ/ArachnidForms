@@ -170,7 +170,7 @@ export function IntegrationSettings({ initialIntegrations, isTestAccount, envSta
           <div className="p-3 border border-border bg-surface/30 rounded-lg space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center justify-between">
               Spam Protection
-              <span className="text-[10px] font-normal normal-case opacity-70">reCAPTCHA v2</span>
+              <span className="text-[10px] font-normal normal-case opacity-70">reCAPTCHA v3</span>
             </h4>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">

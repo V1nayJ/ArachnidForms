@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 import { signIn } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import ReCAPTCHA from "react-google-recaptcha";
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 interface FormNode {
   id: string;
@@ -24,7 +24,18 @@ interface FormNode {
   };
 }
 
-export function PublicFormClient({ slug, title, canvasData, session, previousResponse, recaptchaSite }: { slug: string, title: string, canvasData: any, session: any, previousResponse?: any, recaptchaSite?: string }) {
+export function PublicFormClient(props: { slug: string, title: string, canvasData: any, session: any, previousResponse?: any, recaptchaSite?: string }) {
+  if (props.recaptchaSite && !props.session?.user?.isTestAccount) {
+    return (
+      <GoogleReCaptchaProvider reCaptchaKey={props.recaptchaSite}>
+        <InnerPublicFormClient {...props} />
+      </GoogleReCaptchaProvider>
+    );
+  }
+  return <InnerPublicFormClient {...props} />;
+}
+
+function InnerPublicFormClient({ slug, title, canvasData, session, previousResponse, recaptchaSite }: { slug: string, title: string, canvasData: any, session: any, previousResponse?: any, recaptchaSite?: string }) {
   const pathname = usePathname();
   const [hasVisited, setHasVisited] = useState(false);
   const [answersById, setAnswersById] = useState<Record<string, any>>({});
@@ -32,7 +43,8 @@ export function PublicFormClient({ slug, title, canvasData, session, previousRes
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   // Load from local storage on mount, or from previous response if editing
   useEffect(() => {
@@ -146,6 +158,14 @@ export function PublicFormClient({ slug, title, canvasData, session, previousRes
     setError(null);
 
     try {
+      let captchaToken = null;
+      if (recaptchaSite && !session?.user?.isTestAccount) {
+        if (!executeRecaptcha) {
+          throw new Error("reCAPTCHA is still initializing. Please try again in a moment.");
+        }
+        captchaToken = await executeRecaptcha("form_submit");
+      }
+
       const res = await fetch(`/api/f/${slug}/submit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -270,18 +290,9 @@ export function PublicFormClient({ slug, title, canvasData, session, previousRes
                 </div>
               )}
 
-              {recaptchaSite && !session?.user?.isTestAccount && (
-                <div className="flex justify-center mt-6">
-                  <ReCAPTCHA
-                    sitekey={recaptchaSite}
-                    onChange={(token) => setCaptchaToken(token)}
-                  />
-                </div>
-              )}
-
               <Button 
                 onClick={session?.user?.isTestAccount ? () => signIn(undefined, { callbackUrl: pathname }) : handleSubmit} 
-                disabled={isSubmitting || (!!recaptchaSite && !session?.user?.isTestAccount && !captchaToken)}
+                disabled={isSubmitting}
                 className={cn(
                   "h-14 sm:h-16 px-8 sm:px-12 text-lg sm:text-xl font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all w-full sm:w-auto mt-6",
                   isSubmitting && "opacity-70 cursor-not-allowed"
