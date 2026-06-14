@@ -67,16 +67,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({ user, account, profile }) {
       // If a user links an OAuth account or signs in via standard credentials
       if (account?.type === "oauth" || (account?.provider === "credentials" && !user?.email?.endsWith("@arachnidforms.local"))) {
         if (user.isTestAccount) {
           // Upgrade the account
+          const updateData: any = { isTestAccount: false };
+          if (profile?.name) updateData.name = profile.name;
+          if (profile?.email) updateData.email = profile.email;
+          if (profile?.picture || profile?.image) updateData.image = profile.picture || profile.image;
+
           await db.user.update({
             where: { id: user.id },
-            data: { isTestAccount: false }
+            data: updateData
           });
+          
           user.isTestAccount = false;
+          if (profile?.name) user.name = profile.name;
+          if (profile?.email) user.email = profile.email;
+          if (profile?.picture || profile?.image) user.image = (profile.picture || profile.image) as string;
         }
       }
       return true;
