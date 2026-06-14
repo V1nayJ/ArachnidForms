@@ -23,14 +23,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
   trustHost: true,
   providers: [
-    DiscordProvider({
+    ...(process.env.DISCORD_CLIENT_ID ? [DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID,
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
-    }),
-    GoogleProvider({
+    })] : []),
+    ...(process.env.GOOGLE_CLIENT_ID ? [GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
+    })] : []),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
