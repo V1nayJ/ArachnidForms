@@ -26,10 +26,10 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       siteName: "ArachnidForms",
       images: [
         {
-          url: "/logo.png",
-          width: 800,
-          height: 600,
-          alt: "ArachnidForms Logo",
+          url: "/header.png",
+          width: 1200,
+          height: 630,
+          alt: `${form.title} Header Image`,
         }
       ]
     },
@@ -37,7 +37,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       card: "summary_large_image",
       title: form.title,
       description: form.description || "Please fill out this form.",
-      images: ["/logo.png"],
+      images: ["/header.png"],
     }
   };
 }
