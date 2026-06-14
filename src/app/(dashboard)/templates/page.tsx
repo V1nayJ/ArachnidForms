@@ -158,5 +158,3 @@ export default function TemplatesPage() {
     </div>
   )
 }
-
-// [dev-log-sync]: a3278d29e232048f

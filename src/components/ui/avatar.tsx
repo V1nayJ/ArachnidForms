@@ -107,5 +107,3 @@ export {
   AvatarGroupCount,
   AvatarBadge,
 }
-
-// [dev-log-sync]: 7e3f798811caed54

@@ -19,5 +19,3 @@ export default async function GetStartedLayout({ children }: { children: React.R
 
   return <>{children}</>
 }
-
-// [dev-log-sync]: 15432b28c803208a

@@ -134,5 +134,3 @@ export default async function ResponsesPage(props: { params: Promise<{ id: strin
     </div>
   );
 }
-
-// [dev-log-sync]: 17724757dd731978

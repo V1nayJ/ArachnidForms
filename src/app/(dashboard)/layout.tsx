@@ -46,5 +46,3 @@ export default async function DashboardLayout({ children }: { children: React.Re
     </div>
   )
 }
-
-// [dev-log-sync]: d19e6aa591e3c6b5

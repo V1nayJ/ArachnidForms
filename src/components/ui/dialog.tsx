@@ -158,5 +158,3 @@ export {
   DialogTitle,
   DialogTrigger,
 }
-
-// [dev-log-sync]: 75c93203f3ebbe86

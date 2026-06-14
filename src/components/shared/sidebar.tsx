@@ -73,5 +73,3 @@ export function Sidebar() {
     </div>
   );
 }
-
-// [dev-log-sync]: 0434dba310833456

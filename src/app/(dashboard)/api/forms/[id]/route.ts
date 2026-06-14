@@ -57,5 +57,3 @@ export async function POST(request: Request, props: { params: Promise<{ id: stri
     return NextResponse.json({ error: "Internal Error" }, { status: 500 });
   }
 }
-
-// [dev-log-sync]: f3dc55cb1fb6f395

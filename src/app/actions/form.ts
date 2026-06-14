@@ -104,5 +104,3 @@ export async function createFormAction(titleOrFormData?: FormData | string, desc
   revalidatePath("/forms");
   redirect(`/forms/${form.id}/builder`);
 }
-
-// [dev-log-sync]: 9bddf8727cd52b03

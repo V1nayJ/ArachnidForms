@@ -177,5 +177,3 @@ export default async function DashboardPage() {
     </div>
   );
 }
-
-// [dev-log-sync]: 593321b6f6b281a4

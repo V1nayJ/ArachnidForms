@@ -45,5 +45,3 @@ export function SessionTimer({ expiry }: { expiry: number }) {
     </div>
   )
 }
-
-// [dev-log-sync]: 4af2ef5aa3bd8abf

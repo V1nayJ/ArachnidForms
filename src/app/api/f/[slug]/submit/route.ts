@@ -55,5 +55,3 @@ export async function POST(
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
-
-// [dev-log-sync]: a5f036124b250f65

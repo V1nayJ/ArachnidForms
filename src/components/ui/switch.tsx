@@ -30,5 +30,3 @@ function Switch({
 }
 
 export { Switch }
-
-// [dev-log-sync]: 705912f2c3f5d7a2

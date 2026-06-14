@@ -18,5 +18,3 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
 }
 
 export { Input }
-
-// [dev-log-sync]: dfa2b86324af9358

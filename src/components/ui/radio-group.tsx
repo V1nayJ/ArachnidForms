@@ -36,5 +36,3 @@ function RadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props) {
 }
 
 export { RadioGroup, RadioGroupItem }
-
-// [dev-log-sync]: 003a99782775134b

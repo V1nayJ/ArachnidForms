@@ -118,5 +118,3 @@ export function LoginForm() {
     </div>
   )
 }
-
-// [dev-log-sync]: 3bcb39422523a2f4

@@ -37,5 +37,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-// [dev-log-sync]: 6ded61fd902ec88b

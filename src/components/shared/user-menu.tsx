@@ -78,5 +78,3 @@ export function UserMenu({ user }: { user: any }) {
     </DropdownMenu>
   )
 }
-
-// [dev-log-sync]: 9e2765796855b0b9

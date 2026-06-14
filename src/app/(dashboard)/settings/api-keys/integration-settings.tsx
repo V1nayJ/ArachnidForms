@@ -243,5 +243,3 @@ export function IntegrationSettings({ initialIntegrations, isTestAccount, envSta
     </div>
   );
 }
-
-// [dev-log-sync]: a3180b0eb22f8220

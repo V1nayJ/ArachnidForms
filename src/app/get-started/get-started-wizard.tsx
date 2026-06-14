@@ -300,5 +300,3 @@ export default function GetStartedWizard({ envStatus }: { envStatus?: { hasSmtp:
     </div>
   );
 }
-
-// [dev-log-sync]: 3443222ffb6ae9f9

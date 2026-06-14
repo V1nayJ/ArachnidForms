@@ -152,5 +152,3 @@ export function SettingsForm({ user }: SettingsFormProps) {
     </div>
   )
 }
-
-// [dev-log-sync]: 07aefb65e09b7d6c

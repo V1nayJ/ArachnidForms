@@ -46,5 +46,3 @@ export function CsvExportButton({ columns, responses, filename }: { columns: str
     </Button>
   );
 }
-
-// [dev-log-sync]: 443f9f611d68655b

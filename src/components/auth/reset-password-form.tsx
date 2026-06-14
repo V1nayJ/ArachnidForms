@@ -85,5 +85,3 @@ export function ResetPasswordForm() {
     </div>
   )
 }
-
-// [dev-log-sync]: 4db5cde320fb066d

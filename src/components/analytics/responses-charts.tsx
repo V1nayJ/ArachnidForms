@@ -105,5 +105,3 @@ export function ResponsesCharts({ form }: { form: any }) {
     </div>
   );
 }
-
-// [dev-log-sync]: 63d7a3f2f5f983b9

@@ -23,5 +23,3 @@ function Separator({
 }
 
 export { Separator }
-
-// [dev-log-sync]: bdc874fa1ccde1d3

@@ -150,5 +150,3 @@ export function BuilderSidebar() {
     </aside>
   );
 }
-
-// [dev-log-sync]: 53bd672595b91815

@@ -8,5 +8,3 @@ if (!envParsed.success) {
 }
 
 export const env = envParsed.data
-
-// [dev-log-sync]: 21727bd054e1027f

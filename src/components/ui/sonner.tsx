@@ -47,5 +47,3 @@ const Toaster = ({ ...props }: ToasterProps) => {
 }
 
 export { Toaster }
-
-// [dev-log-sync]: 398070b612c38577

@@ -26,5 +26,3 @@ export default async function SettingsPage() {
     </div>
   )
 }
-
-// [dev-log-sync]: e718ddd62845d732

@@ -101,5 +101,3 @@ export {
   CardDescription,
   CardContent,
 }
-
-// [dev-log-sync]: 084620c2ff03c049

@@ -227,5 +227,3 @@ export function FormList({ forms: initialForms }: { forms: any[] }) {
     </>
   );
 }
-
-// [dev-log-sync]: 96f2d9eff2e157ae

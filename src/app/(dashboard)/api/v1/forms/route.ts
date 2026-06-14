@@ -35,5 +35,3 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
   }
 }
-
-// [dev-log-sync]: c683211fe27e9984

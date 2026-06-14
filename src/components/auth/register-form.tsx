@@ -119,5 +119,3 @@ export function RegisterForm() {
     </div>
   )
 }
-
-// [dev-log-sync]: 48919c71b94f097c

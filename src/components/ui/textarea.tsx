@@ -16,5 +16,3 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
 }
 
 export { Textarea }
-
-// [dev-log-sync]: 3e6a4471bed14edd

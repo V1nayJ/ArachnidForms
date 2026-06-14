@@ -13,5 +13,3 @@ export default async function RegisterPage() {
     </div>
   )
 }
-
-// [dev-log-sync]: 221cb0e17af1d6af

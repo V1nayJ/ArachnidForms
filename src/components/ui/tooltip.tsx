@@ -64,5 +64,3 @@ function TooltipContent({
 }
 
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
-
-// [dev-log-sync]: 8cb55b7d995bfff2
