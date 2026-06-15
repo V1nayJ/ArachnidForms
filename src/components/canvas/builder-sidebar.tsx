@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react';
-import { Type, CheckSquare, List, AlignLeft, CircleDot, Upload, ChevronLeft, ChevronRight, Mail, Hash, Phone, Calendar, Star, ToggleRight, Link as LinkIcon, PenTool, CreditCard, GitBranch, Calculator, MessageSquare, EyeOff, Search, Key, Clock, SlidersHorizontal, Palette, MapPin, Grid, ThumbsUp, Image, ListOrdered } from 'lucide-react';
+import { Type, CheckSquare, List, AlignLeft, CircleDot, Upload, ChevronLeft, ChevronRight, Mail, Hash, Phone, Calendar, Star, ToggleRight, Link as LinkIcon, PenTool, CreditCard, GitBranch, Calculator, MessageSquare, EyeOff, Search, Key, Clock, SlidersHorizontal, Palette, MapPin, Grid, ThumbsUp, Image, ListOrdered, FileSignature } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -26,6 +26,7 @@ export function BuilderSidebar() {
         { type: 'number', icon: <Hash className="w-4 h-4" />, label: 'Number', desc: 'Numerical input.' },
         { type: 'password', icon: <Key className="w-4 h-4" />, label: 'Password', desc: 'Hidden text.' },
         { type: 'address', icon: <MapPin className="w-4 h-4" />, label: 'Address', desc: 'Physical address.' },
+              { type: 'consent', icon: <FileSignature className="w-4 h-4" />, label: 'Consent', desc: 'Terms of service.' },
       ]
     },
     {
