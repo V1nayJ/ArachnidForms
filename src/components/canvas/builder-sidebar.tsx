@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react';
-import { Type, CheckSquare, List, AlignLeft, CircleDot, Upload, ChevronLeft, ChevronRight, Mail, Hash, Phone, Calendar, Star, ToggleRight, Link as LinkIcon, PenTool, CreditCard, GitBranch, Calculator, MessageSquare, EyeOff, Search, Key, Clock, SlidersHorizontal, Palette, MapPin, Grid } from 'lucide-react';
+import { Type, CheckSquare, List, AlignLeft, CircleDot, Upload, ChevronLeft, ChevronRight, Mail, Hash, Phone, Calendar, Star, ToggleRight, Link as LinkIcon, PenTool, CreditCard, GitBranch, Calculator, MessageSquare, EyeOff, Search, Key, Clock, SlidersHorizontal, Palette, MapPin, Grid, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -52,6 +52,7 @@ export function BuilderSidebar() {
         { type: 'time', icon: <Clock className="w-4 h-4" />, label: 'Time', desc: 'Time picker.' },
         { type: 'color', icon: <Palette className="w-4 h-4" />, label: 'Color', desc: 'Color picker.' },
               { type: 'matrix', icon: <Grid className="w-4 h-4" />, label: 'Matrix', desc: 'Grid choice.' },
+              { type: 'nps', icon: <ThumbsUp className="w-4 h-4" />, label: 'NPS', desc: 'Net promoter score.' },
       ]
     },
     {
