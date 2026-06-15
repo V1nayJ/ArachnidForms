@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react';
-import { Type, CheckSquare, List, AlignLeft, CircleDot, Upload, ChevronLeft, ChevronRight, Mail, Hash, Phone, Calendar, Star, ToggleRight, Link as LinkIcon, PenTool, CreditCard, GitBranch, Calculator, MessageSquare, EyeOff, Search, Key, Clock, SlidersHorizontal, Palette, MapPin, Grid, ThumbsUp } from 'lucide-react';
+import { Type, CheckSquare, List, AlignLeft, CircleDot, Upload, ChevronLeft, ChevronRight, Mail, Hash, Phone, Calendar, Star, ToggleRight, Link as LinkIcon, PenTool, CreditCard, GitBranch, Calculator, MessageSquare, EyeOff, Search, Key, Clock, SlidersHorizontal, Palette, MapPin, Grid, ThumbsUp, Image } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -36,6 +36,7 @@ export function BuilderSidebar() {
         { type: 'checkbox', icon: <CheckSquare className="w-4 h-4" />, label: 'Multiple Choice', desc: 'Checkboxes.' },
         { type: 'switch', icon: <ToggleRight className="w-4 h-4" />, label: 'Yes / No', desc: 'Boolean toggle.' },
         { type: 'slider', icon: <SlidersHorizontal className="w-4 h-4" />, label: 'Slider', desc: 'Range selector.' },
+              { type: 'image_choice', icon: <Image className="w-4 h-4" />, label: 'Image Choice', desc: 'Select an image.' },
       ]
     },
     {
