@@ -408,7 +408,143 @@ function InnerPublicFormClient({ slug, title, canvasData, session, previousRespo
                         </button>
                       ))}
                     </div>
-                  ) : currentNode?.data?.questionType === 'consent' || currentNode?.data?.questionType === 'checkbox' ? (
+                  ) : currentNode?.data?.questionType === 'checkbox' ? (
+                    <div className="space-y-3">
+                      {(currentNode.data.options || ['Option A', 'Option B']).map((opt: string) => {
+                        const isChecked = Array.isArray(answersById[currentNode.id]) && answersById[currentNode.id].includes(opt);
+                        return (
+                          <label key={opt} className={cn(
+                            "flex items-center space-x-4 p-4 sm:p-5 border rounded-xl sm:rounded-2xl cursor-pointer transition-all hover:bg-primary/5",
+                            isChecked ? "border-primary bg-primary/10 ring-1 ring-primary shadow-sm shadow-primary/10" : "border-border bg-background/50"
+                          )}>
+                            <input 
+                              type="checkbox" 
+                              checked={isChecked}
+                              onChange={(e) => {
+                                const currentArr = Array.isArray(answersById[currentNode.id]) ? [...answersById[currentNode.id]] : [];
+                                if (e.target.checked) {
+                                  handleInputChange(currentNode.id, currentNode.data.label as string, [...currentArr, opt]);
+                                } else {
+                                  handleInputChange(currentNode.id, currentNode.data.label as string, currentArr.filter(x => x !== opt));
+                                }
+                              }}
+                              className="w-5 h-5 sm:w-6 sm:h-6 text-primary border-border focus:ring-primary rounded"
+                            />
+                            <span className="text-lg sm:text-xl font-medium text-foreground">{opt}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  ) : currentNode?.data?.questionType === 'switch' ? (
+                    <div className="flex gap-4">
+                      {['Yes', 'No'].map((opt) => (
+                        <button
+                          key={opt}
+                          type="button"
+                          onClick={() => handleInputChange(currentNode.id, currentNode.data.label as string, opt)}
+                          className={cn(
+                            "flex-1 py-4 sm:py-5 rounded-xl sm:rounded-2xl text-lg sm:text-xl font-semibold transition-all border",
+                            answersById[currentNode.id] === opt ? "bg-primary text-primary-foreground border-primary shadow-md shadow-primary/20" : "bg-background/50 border-border text-muted-foreground hover:border-primary hover:text-foreground"
+                          )}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  ) : currentNode?.data?.questionType === 'slider' ? (
+                    <div className="flex flex-col items-center w-full space-y-6 pt-4">
+                      <div className="w-full flex items-center justify-between text-muted-foreground font-medium px-2">
+                        <span>{currentNode?.data?.options?.[0] || '0'}</span>
+                        <span className="text-4xl font-bold text-primary">
+                          {answersById[currentNode.id] || (currentNode?.data?.options?.[0] || '0')}
+                        </span>
+                        <span>{currentNode?.data?.options?.[1] || '100'}</span>
+                      </div>
+                      <input 
+                        type="range"
+                        min={currentNode?.data?.options?.[0] || '0'}
+                        max={currentNode?.data?.options?.[1] || '100'}
+                        value={answersById[currentNode.id] || (currentNode?.data?.options?.[0] || '0')}
+                        onChange={(e) => handleInputChange(currentNode.id, currentNode.data.label as string, e.target.value)}
+                        className="w-full h-3 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
+                      />
+                    </div>
+                  ) : currentNode?.data?.questionType === 'image_choice' ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                      {(currentNode.data.options || [
+                        'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=400&q=80',
+                        'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&q=80',
+                      ]).map((opt: string, i: number) => {
+                        const isUrl = opt.startsWith('http');
+                        return (
+                          <button
+                            key={opt}
+                            type="button"
+                            onClick={() => handleInputChange(currentNode.id, currentNode.data.label as string, opt)}
+                            className={cn(
+                              "relative overflow-hidden rounded-xl sm:rounded-2xl border-2 transition-all aspect-square flex items-center justify-center bg-muted/30",
+                              answersById[currentNode.id] === opt ? "border-primary ring-2 ring-primary ring-offset-2 ring-offset-background" : "border-border hover:border-primary/50"
+                            )}
+                          >
+                            {isUrl ? (
+                              <img src={opt} alt={`Option ${i+1}`} className="w-full h-full object-cover" />
+                            ) : (
+                              <span className="text-lg font-medium p-4 text-center">{opt}</span>
+                            )}
+                            {answersById[currentNode.id] === opt && (
+                              <div className="absolute top-2 right-2 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-md">
+                                ✓
+                              </div>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : currentNode?.data?.questionType === 'ranking' ? (
+                    <div className="space-y-3">
+                      {(() => {
+                        const defaultOpts = currentNode.data.options || ['Item 1', 'Item 2', 'Item 3'];
+                        const currentRank = Array.isArray(answersById[currentNode.id]) 
+                          ? answersById[currentNode.id] 
+                          : defaultOpts;
+                        
+                        const moveItem = (index: number, direction: -1 | 1) => {
+                          const newRank = [...currentRank];
+                          const temp = newRank[index];
+                          newRank[index] = newRank[index + direction];
+                          newRank[index + direction] = temp;
+                          handleInputChange(currentNode.id, currentNode.data.label as string, newRank);
+                        };
+
+                        return currentRank.map((opt: string, index: number) => (
+                          <div key={opt} className="flex items-center gap-3 p-3 sm:p-4 border border-border bg-background/50 rounded-xl sm:rounded-2xl shadow-sm">
+                            <div className="flex flex-col gap-1">
+                              <button 
+                                type="button" 
+                                onClick={() => moveItem(index, -1)} 
+                                disabled={index === 0}
+                                className="p-1 hover:bg-muted rounded text-muted-foreground disabled:opacity-30"
+                              >
+                                ▲
+                              </button>
+                              <button 
+                                type="button" 
+                                onClick={() => moveItem(index, 1)} 
+                                disabled={index === currentRank.length - 1}
+                                className="p-1 hover:bg-muted rounded text-muted-foreground disabled:opacity-30"
+                              >
+                                ▼
+                              </button>
+                            </div>
+                            <div className="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center shrink-0">
+                              {index + 1}
+                            </div>
+                            <span className="text-lg font-medium text-foreground">{opt}</span>
+                          </div>
+                        ));
+                      })()}
+                    </div>
+                  ) : currentNode?.data?.questionType === 'consent' ? (
                     <label className={cn(
                       "flex items-start space-x-4 p-4 sm:p-5 border rounded-xl sm:rounded-2xl cursor-pointer transition-all hover:bg-primary/5",
                       answersById[currentNode.id] ? "border-primary bg-primary/10 ring-1 ring-primary shadow-sm shadow-primary/10" : "border-border bg-background/50"
@@ -474,9 +610,7 @@ function InnerPublicFormClient({ slug, title, canvasData, session, previousRespo
                       type={
                         ['email', 'number', 'password', 'time', 'color', 'date', 'file', 'url'].includes(currentNode?.data?.questionType as string) 
                           ? currentNode?.data?.questionType as string
-                          : currentNode?.data?.questionType === 'slider' 
-                            ? 'range' 
-                            : 'text'
+                          : 'text'
                       }
                       placeholder={currentNode?.data?.questionType === 'color' ? '#000000' : "Type your answer here..."}
                       className={cn(
