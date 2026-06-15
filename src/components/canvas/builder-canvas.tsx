@@ -22,6 +22,7 @@ import { QuestionNode } from './nodes/question-node';
 import { StartNode } from './nodes/start-node';
 import { EndNode } from './nodes/end-node';
 import { LogicNode } from './nodes/logic-node';
+import { DeleteEdge } from './edges/delete-edge';
 import { BuilderSidebar } from './builder-sidebar';
 import { PropertiesPanel } from './properties-panel';
 import { toast } from 'sonner';
@@ -43,6 +44,10 @@ const nodeTypes: NodeTypes = {
   logicNode: LogicNode,
 };
 
+const edgeTypes: any = {
+  deleteEdge: DeleteEdge,
+};
+
 const initialNodes: Node[] = [
   { id: 'start', type: 'startNode', position: { x: 300, y: 50 }, data: { label: 'Start' }, deletable: false },
   { id: 'end', type: 'endNode', position: { x: 300, y: 500 }, data: { label: 'Submit' }, deletable: false },
@@ -57,6 +62,16 @@ function CanvasArea({ formId, formSlug, initialData, integrations, isTestAccount
   const { screenToFlowPosition } = useReactFlow();
   
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [dragHoverEdge, setDragHoverEdge] = useState<string | null>(null);
+
+  const distanceToSegment = useCallback((p: {x: number, y: number}, v: {x: number, y: number}, w: {x: number, y: number}) => {
+    const l2 = (w.x - v.x) ** 2 + (w.y - v.y) ** 2;
+    if (l2 === 0) return Math.hypot(p.x - v.x, p.y - v.y);
+    let t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2;
+    t = Math.max(0, Math.min(1, t));
+    const proj = { x: v.x + t * (w.x - v.x), y: v.y + t * (w.y - v.y) };
+    return Math.hypot(p.x - proj.x, p.y - proj.y);
+  }, []);
 
   const [isDirty, setIsDirty] = useState(false);
   const [showExitDialog, setShowExitDialog] = useState(false);
@@ -252,7 +267,8 @@ function CanvasArea({ formId, formSlug, initialData, integrations, isTestAccount
   const onConnect = useCallback(
     (params: Edge | Connection) => {
       if (isValidConnection(params as Connection)) {
-        setEdges((eds) => addEdge(params, eds));
+        const newEdge = { ...params, type: 'deleteEdge' };
+        setEdges((eds) => addEdge(newEdge, eds));
         setIsDirty(true);
       }
     },
@@ -262,11 +278,40 @@ function CanvasArea({ formId, formSlug, initialData, integrations, isTestAccount
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
+
+    const position = screenToFlowPosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+
+    let closestEdgeId = null;
+    let minDistance = 40;
+
+    edges.forEach(edge => {
+      const sourceNode = nodes.find(n => n.id === edge.source);
+      const targetNode = nodes.find(n => n.id === edge.target);
+      if (sourceNode && targetNode) {
+        const sourcePos = { x: sourceNode.position.x + 150, y: sourceNode.position.y + 50 };
+        const targetPos = { x: targetNode.position.x + 150, y: targetNode.position.y + 50 };
+        const dist = distanceToSegment(position, sourcePos, targetPos);
+        if (dist < minDistance) {
+          minDistance = dist;
+          closestEdgeId = edge.id;
+        }
+      }
+    });
+
+    setDragHoverEdge(closestEdgeId);
+  }, [screenToFlowPosition, edges, nodes, distanceToSegment]);
+
+  const onDragLeave = useCallback(() => {
+    setDragHoverEdge(null);
   }, []);
 
   const onDrop = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault();
+      setDragHoverEdge(null);
 
       const type = event.dataTransfer.getData('application/reactflow');
       const questionType = event.dataTransfer.getData('application/questionType');
@@ -314,9 +359,32 @@ function CanvasArea({ formId, formSlug, initialData, integrations, isTestAccount
 
       setNodes((nds) => nds.concat(newNode));
       setSelectedNodeId(newNodeId);
+
+      if (dragHoverEdge) {
+        const edgeToSplit = edges.find(e => e.id === dragHoverEdge);
+        if (edgeToSplit) {
+          const edge1 = {
+            id: `e-${edgeToSplit.source}-${newNodeId}`,
+            source: edgeToSplit.source,
+            target: newNodeId,
+            sourceHandle: edgeToSplit.sourceHandle,
+            type: 'deleteEdge',
+          };
+          const edge2 = {
+            id: `e-${newNodeId}-${edgeToSplit.target}`,
+            source: newNodeId,
+            target: edgeToSplit.target,
+            targetHandle: edgeToSplit.targetHandle,
+            type: 'deleteEdge',
+          };
+          
+          setEdges((eds) => eds.filter(e => e.id !== dragHoverEdge).concat([edge1, edge2]));
+        }
+      }
+
       setIsDirty(true);
     },
-    [screenToFlowPosition, setNodes, integrations],
+    [screenToFlowPosition, setNodes, setEdges, integrations, dragHoverEdge, edges],
   );
   
   const onSelectionChange = useCallback(({ nodes }: any) => {
@@ -349,6 +417,21 @@ function CanvasArea({ formId, formSlug, initialData, integrations, isTestAccount
 
 
   const selectedNode = nodes.find(n => n.id === selectedNodeId);
+
+  const displayEdges = useMemo(() => {
+    return edges.map(e => {
+      // Ensure all initial/existing edges use the deleteEdge type
+      let type = e.type || 'deleteEdge';
+      if (type !== 'deleteEdge' && type !== 'default') type = 'deleteEdge';
+      
+      return {
+        ...e,
+        type,
+        style: e.id === dragHoverEdge ? { stroke: '#3b82f6', strokeWidth: 4, opacity: 0.5 } : e.style,
+        animated: e.id === dragHoverEdge ? true : e.animated,
+      };
+    });
+  }, [edges, dragHoverEdge]);
 
   return (
     <div className="flex flex-col w-full h-full bg-background">
@@ -384,14 +467,17 @@ function CanvasArea({ formId, formSlug, initialData, integrations, isTestAccount
         <div className="flex-1 h-full relative z-0" ref={reactFlowWrapper}>
           <ReactFlow
             nodes={nodes}
-            edges={edges}
+            edges={displayEdges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             onDrop={onDrop}
             onDragOver={onDragOver}
+            onDragLeave={onDragLeave}
             onSelectionChange={onSelectionChange}
             nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
+            defaultEdgeOptions={{ type: 'deleteEdge' }}
             colorMode="dark"
             fitView
           >
