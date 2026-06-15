@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react';
-import { Type, CheckSquare, List, AlignLeft, CircleDot, Upload, ChevronLeft, ChevronRight, Mail, Hash, Phone, Calendar, Star, ToggleRight, Link as LinkIcon, PenTool, CreditCard, GitBranch, Calculator, MessageSquare, EyeOff, Search, Key, Clock, SlidersHorizontal, Palette, MapPin, Grid, ThumbsUp, Image, ListOrdered, FileSignature, ShieldCheck, Video, Mic } from 'lucide-react';
+import { Type, CheckSquare, List, AlignLeft, CircleDot, Upload, ChevronLeft, ChevronRight, Mail, Hash, Phone, Calendar, Star, ToggleRight, Link as LinkIcon, PenTool, CreditCard, GitBranch, Calculator, MessageSquare, EyeOff, Search, Key, Clock, SlidersHorizontal, Palette, MapPin, Grid, ThumbsUp, Image, ListOrdered, FileSignature, ShieldCheck, Video, Mic, Code } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -59,6 +59,7 @@ export function BuilderSidebar() {
               { type: 'matrix', icon: <Grid className="w-4 h-4" />, label: 'Matrix', desc: 'Grid choice.' },
               { type: 'nps', icon: <ThumbsUp className="w-4 h-4" />, label: 'NPS', desc: 'Net promoter score.' },
               { type: 'captcha', icon: <ShieldCheck className="w-4 h-4" />, label: 'CAPTCHA', desc: 'Spam prevention.' },
+              { type: 'html', icon: <Code className="w-4 h-4" />, label: 'HTML', desc: 'Custom code.' },
       ]
     },
     {
