@@ -73,7 +73,7 @@ const categoryIcons: Record<Category, React.ElementType> = {
 
 export default function TemplatesPage() {
   const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<Category | "All">("All");
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const handleUseTemplate = (title: string, description: string) => {
@@ -83,15 +83,20 @@ export default function TemplatesPage() {
     });
   };
 
-  const filteredTemplates = useMemo(() => {
-    return TEMPLATES.filter(t => {
+  const groupedTemplates = useMemo(() => {
+    const groups: Partial<Record<Category, Template[]>> = {};
+    let hasAny = false;
+    TEMPLATES.forEach(t => {
       const matchesSearch = t.title.toLowerCase().includes(search.toLowerCase()) || 
                             t.description.toLowerCase().includes(search.toLowerCase());
-      const matchesCategory = selectedCategory === "All" || t.category === selectedCategory;
-      return matchesSearch && matchesCategory;
+      if (matchesSearch) {
+        if (!groups[t.category]) groups[t.category] = [];
+        groups[t.category]!.push(t);
+        hasAny = true;
+      }
     });
-  }, [search, selectedCategory]);
-
+    return { groups, hasAny };
+  }, [search]);
 
   return (
     <div className="w-full h-full flex flex-col space-y-6 pb-12">
@@ -112,10 +117,10 @@ export default function TemplatesPage() {
       </div>
 
       <div className="flex flex-wrap gap-2 pb-2">
-        {["All", ...Object.keys(categoryIcons)].map((cat) => (
+        {Object.keys(categoryIcons).map((cat) => (
           <button
             key={cat}
-            onClick={() => setSelectedCategory(cat as Category | "All")}
+            onClick={() => setSelectedCategory(prev => prev === cat ? null : cat as Category)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ease-in-out ${
               selectedCategory === cat 
                 ? "bg-primary text-primary-foreground shadow-md shadow-primary/20 scale-105" 
@@ -127,50 +132,71 @@ export default function TemplatesPage() {
         ))}
       </div>
 
-      {filteredTemplates.length === 0 ? (
+      {!groupedTemplates.hasAny ? (
         <div className="flex-1 flex flex-col items-center justify-center p-12 text-center border border-dashed border-border rounded-xl bg-surface/20">
           <Sparkles className="w-12 h-12 text-muted-foreground mb-4 opacity-20" />
           <h3 className="text-lg font-bold">No templates found</h3>
           <p className="text-muted-foreground text-sm max-w-sm mt-1">We couldn't find any templates matching your criteria. Try another search term or category.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-          {filteredTemplates.map((template) => {
-            const Icon = categoryIcons[template.category as Category];
+        <div className="flex flex-col space-y-10">
+          {(Object.entries(categoryIcons) as [Category, React.ElementType][]).map(([cat, Icon]) => {
+            const categoryTemplates = groupedTemplates.groups[cat];
+            if (!categoryTemplates || categoryTemplates.length === 0) return null;
+            
+            // If a category is selected, only show that category's section
+            if (selectedCategory && selectedCategory !== cat) return null;
+
             return (
-              <div 
-                key={template.id} 
-                onClick={() => handleUseTemplate(template.title, template.description)}
-                className={`group relative flex flex-col justify-between p-5 border border-border rounded-2xl bg-surface/30 hover:bg-surface/80 hover:border-primary/40 transition-all duration-300 ${isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer"} overflow-hidden`}
-              >
-                {/* Decorative background glow */}
-                <div className="absolute -right-8 -top-8 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors pointer-events-none" />
-                
-                <div>
-                  <div className="flex justify-between items-start mb-4">
+              <div key={cat} className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
                     <div className="p-2 bg-primary/10 text-primary rounded-xl">
                       <Icon className="w-5 h-5" />
                     </div>
+                    <h2 className="text-2xl font-bold tracking-tight">{cat}</h2>
                   </div>
-                  
-                  <h3 className="text-base font-bold mb-1.5 group-hover:text-primary transition-colors pr-2">
-                    {template.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                    {template.description}
-                  </p>
+                  <div className="h-px flex-1 bg-border/50 rounded-full" />
                 </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                  {categoryTemplates.map((template) => {
+                    const TemplateIcon = Icon;
+                    return (
+                      <div 
+                        key={template.id} 
+                        onClick={() => handleUseTemplate(template.title, template.description)}
+                        className={`group relative flex flex-col justify-between p-5 border border-border rounded-2xl bg-surface/30 hover:bg-surface/80 hover:border-primary/40 transition-all duration-300 ${isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer"} overflow-hidden`}
+                      >
+                        {/* Decorative background glow */}
+                        <div className="absolute -right-8 -top-8 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors pointer-events-none" />
+                        
+                        <div>
+                          <div className="flex justify-between items-start mb-4">
+                            <div className="p-2 bg-primary/10 text-primary rounded-xl">
+                              <TemplateIcon className="w-5 h-5" />
+                            </div>
+                          </div>
+                          
+                          <h3 className="text-base font-bold mb-1.5 group-hover:text-primary transition-colors pr-2">
+                            {template.title}
+                          </h3>
+                          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                            {template.description}
+                          </p>
+                        </div>
 
-                <div className="mt-6 flex items-center justify-between border-t border-border/50 pt-4">
-                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    {template.category}
-                  </span>
-                  <div className="flex items-center text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity translate-x-2 group-hover:translate-x-0 duration-300">
-                    Use Template <ChevronRight className="w-3 h-3 ml-1" />
-                  </div>
+                        <div className="mt-6 flex items-center justify-end border-t border-border/50 pt-4">
+                          <div className="flex items-center text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity translate-x-2 group-hover:translate-x-0 duration-300">
+                            Use Template <ChevronRight className="w-3 h-3 ml-1" />
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       )}
