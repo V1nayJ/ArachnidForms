@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react';
-import { Type, CheckSquare, List, AlignLeft, CircleDot, Upload, ChevronLeft, ChevronRight, Mail, Hash, Phone, Calendar, Star, ToggleRight, Link as LinkIcon, PenTool, CreditCard, GitBranch, Calculator, MessageSquare, EyeOff, Search, Key, Clock, SlidersHorizontal, Palette, MapPin, Grid, ThumbsUp, Image, ListOrdered, FileSignature, ShieldCheck, Video } from 'lucide-react';
+import { Type, CheckSquare, List, AlignLeft, CircleDot, Upload, ChevronLeft, ChevronRight, Mail, Hash, Phone, Calendar, Star, ToggleRight, Link as LinkIcon, PenTool, CreditCard, GitBranch, Calculator, MessageSquare, EyeOff, Search, Key, Clock, SlidersHorizontal, Palette, MapPin, Grid, ThumbsUp, Image, ListOrdered, FileSignature, ShieldCheck, Video, Mic } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -28,6 +28,7 @@ export function BuilderSidebar() {
         { type: 'address', icon: <MapPin className="w-4 h-4" />, label: 'Address', desc: 'Physical address.' },
               { type: 'consent', icon: <FileSignature className="w-4 h-4" />, label: 'Consent', desc: 'Terms of service.' },
               { type: 'video', icon: <Video className="w-4 h-4" />, label: 'Video', desc: 'Embed video.' },
+              { type: 'audio', icon: <Mic className="w-4 h-4" />, label: 'Audio', desc: 'Embed audio.' },
       ]
     },
     {
