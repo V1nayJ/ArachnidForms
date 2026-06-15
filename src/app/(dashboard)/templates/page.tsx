@@ -140,15 +140,23 @@ export default function TemplatesPage() {
         </div>
       ) : (
         <div className="flex flex-col space-y-10">
-          {(Object.entries(categoryIcons) as [Category, React.ElementType][]).map(([cat, Icon]) => {
+          {(Object.entries(categoryIcons) as [Category, React.ElementType][])
+            .sort(([catA], [catB]) => {
+              if (selectedCategory === catA) return -1;
+              if (selectedCategory === catB) return 1;
+              return 0;
+            })
+            .map(([cat, Icon]) => {
             const categoryTemplates = groupedTemplates.groups[cat];
             if (!categoryTemplates || categoryTemplates.length === 0) return null;
             
-            // If a category is selected, only show that category's section
-            if (selectedCategory && selectedCategory !== cat) return null;
+            const isFaded = selectedCategory && selectedCategory !== cat;
 
             return (
-              <div key={cat} className="space-y-6">
+              <div 
+                key={cat} 
+                className={`space-y-6 transition-all duration-500 ease-in-out ${isFaded ? "opacity-40 grayscale-[0.5] scale-[0.98] pointer-events-none" : "opacity-100 scale-100"}`}
+              >
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <div className="p-2 bg-primary/10 text-primary rounded-xl">
