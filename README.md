@@ -88,7 +88,7 @@ Ensure the following are installed on your local machine before proceeding:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/arachnidforms.git
+git clone https://github.com/ch0udharyji/arachnidforms.git
 cd arachnidforms
 ```
 
